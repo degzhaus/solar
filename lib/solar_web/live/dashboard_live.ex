@@ -5,6 +5,10 @@ defmodule SolarWeb.DashboardLive do
     ~H"""
     <div class="bg-white">
       <h1>Dashboard</h1>
+
+      <%= @current_user.email %>
+      <%= @roles %>
+
       <.button phx-click={show_modal("confirm-modal")} phx-disable-with class="py-2 px-3">
         Show Modal
       </.button>

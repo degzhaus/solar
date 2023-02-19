@@ -7,6 +7,7 @@ defmodule Solar.Accounts do
   alias Solar.Repo
 
   alias Solar.Accounts.{User, UserToken, UserNotifier}
+  alias Solar.Accounts.User.{Role}
 
   ## Database getters
 
@@ -349,5 +350,16 @@ defmodule Solar.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  def add_role(user, role) do
+    %Role{user_id: user.id, role: role}
+    |> Repo.insert()
+  end
+
+  def list_roles(user) do
+    from(r in Role, where: r.user_id == ^user.id)
+    |> Repo.all()
+    |> Enum.map(& &1.role)
   end
 end

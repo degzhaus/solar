@@ -175,9 +175,14 @@ defmodule SolarWeb.UserAuth do
   defp mount_current_user(session, socket) do
     case session do
       %{"user_token" => user_token} ->
-        Phoenix.Component.assign_new(socket, :current_user, fn ->
-          Accounts.get_user_by_session_token(user_token)
-        end)
+        user = Accounts.get_user_by_session_token(user_token)
+        roles = Accounts.list_roles(user)
+
+        Phoenix.Component.assign(
+          socket,
+          current_user: user,
+          roles: roles
+        )
 
       %{} ->
         Phoenix.Component.assign_new(socket, :current_user, fn -> nil end)
